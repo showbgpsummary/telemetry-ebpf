@@ -6,7 +6,8 @@ import (
 	"syscall"
 )
 
-func SysCallNotify(stopChan chan struct{}) {
+// When a signal arrives, it sends a value into stopChan to notify other goroutines.
+func SysCallNotify(stopChan chan struct{}) error {
 	syscallreceived := make(chan os.Signal, 1)
 	signal.Notify(syscallreceived, syscall.SIGINT, syscall.SIGTERM)
 	// SIGINT is generated via manual control-c from CLI and SIGTERM is default signal of the kill.
@@ -17,4 +18,6 @@ func SysCallNotify(stopChan chan struct{}) {
 	if systemcall != nil {
 		stopChan <- struct{}{}
 	}
+	//added for error handling in main.go
+	return nil
 }
