@@ -1,9 +1,8 @@
-# Developing my own telemetry services 
-In this repository,I will code my own telemetry services via golang,code a little C for more low-level functions and dynamicly adapt current CPU and RAM stats of the host.
+# Ebpf powered zero trust arthitecture firewall 
+This repository contains a simple eBPF/XDP-based firewall. The purpose of this project is to create a high-performance firewall that operates on an "allow-list" basis, blocking all traffic except for sources explicitly permitted in a BPF map.
+## About architecture
+This project uses a standard Control Plane / Data Plane separation:
 
-# Main Goal
+- Data Plane (Kernelspace): The firewall.c eBPF program, once loaded via XDP, acts as the high-speed data plane. It runs in the kernel and inspects every packet, enforcing policy by checking the allowed_ip_map for a match.
 
-Integrating my own telemetry services to linux core via ebpf,managing cpu priorities and detect possible OOMKILL's,saving as much logs as I can but never harm other services like FRR.
-
-
-
+- Control Plane (Userspace): A (planned) Go application will act as the control plane. Its job is to manage the policy by adding or removing allowed IP addresses from the allowed_ip_map.
